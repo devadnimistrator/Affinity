@@ -1,0 +1,125 @@
+﻿
+
+    <div class="row">
+        <div class="col-md-2 col-sm-12 col-xs-12">
+            <h1>Test LAB</h1>
+            <div id="menu">
+            </div>
+        </div>
+        <div class="col-md-10 col-sm-12 col-xs-12 bg-blue">
+            <div class="container body-content">                
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>Welcome to Affinity MMA test simulator.</h2>
+                        <p>
+                            This the playground you can play with test Affinity system and make yourself familiar with what and how it does.
+                            This portal gives you opportunity to play as an Employer or a Rostering system’s integration team member and test what you can send to Affinity and how it will distribute information to mobile devices.
+                        </p>
+                        <p>
+                            Please note, this is not a Rostering system,  this is what can cooperate with your rostering system and empower it with true mobile app distributed functionality.
+                        </p>
+                        <p>
+                            The tasks, reminders and checklists  can be run and complete on device without dependency on existing network connection. The Affinity app will gather the data, the actual “when” and “where” and  will take care to syncronise  gathered data as soon as the device gets into reception.
+                        </p>
+                        <p>
+                            So, first, take your Android or iOS device and download free Affinity application from ____
+                            Register your “Employee” account via application.
+                        </p>
+                        <p>
+                            Register your “Rostering system” or you can say “Employer” account using the form below.
+                            If you come second time use your credentials with the login form.
+                        </p>
+                    </div>
+                </div>
+                <hr />               
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2>Login</h2>
+                        <form id="loginForm">
+                            <div class="row form-group">
+                                <label for="logUserName" class="col-md-3">User Name</label>
+                                <input id="logUserName" type="text" class="col-md-9" />
+                            </div>
+                            <div class="row form-group">
+                                <label for="logPassword" class="col-md-3">Password</label>
+                                <input id="logPassword" type="password" class="col-md-9" />
+                            </div>
+                            <div class="form-group row">
+                                <a class="btn btn-primary col-sm-offset-3" ref="#" onclick="loginFrm();">Login</a>
+                                <a class="btn btn-warning col-sm-offset-3" ref="#" onclick="logout();">Logout</a>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                        <h2>Register</h2>
+                        <form id="registerForm">
+                            <div class="row form-group">
+                                <label for="regUserName" class="col-md-3">User Name</label>
+                                <input id="regUserName" type="text" class="col-md-9" />
+                            </div>
+                            <div class="row form-group">
+                                <label for="regPassword" class="col-md-3">Password</label>
+                                <input id="regPassword" type="password" class="col-md-9" />
+                            </div>
+                            <div class="row form-group">
+                                <label for="regPassword2" class="col-md-3">Confirm Password</label>
+                                <input id="regPassword2" type="password" class="col-md-9" />
+                            </div>
+                            <div class="form-group row">
+                                <a class="btn btn-primary col-sm-offset-3" ref="#" onclick="regoFrm();">Register</a>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div id="Status" style="display: none;"></div>
+                </div>
+                <hr />
+                <footer>
+                    <p>&copy; 2016 - (c)Reserved</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+    
+
+    <script src="/Scripts/jquery-1.10.2.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/respond.js"></script>
+    <script src="Scripts/Account.js"></script>
+    <script src="Scripts/Messages.js"></script>
+    <script src="Scripts/utils.js"></script>
+<script >
+    var loginFrm = function() {
+        var loginData = {
+            grant_type: 'password',
+            username: $('#logUserName').val(),
+            password: $('#logPassword').val()
+        };
+        login(loginData);
+    }
+
+    var regoFrm = function () {
+        register($('#regUserName').val(),
+                 $('#regPassword').val(),
+                 $('#regPassword2').val()
+                );
+
+    }
+
+    $(document).ready(function() {
+        if (isLogged()) {
+            var d = getLoginData();
+            infoMesssage("<strong>Logged</strong> as <strong>" + d.username + "</strong>");
+        } else {
+            warningMesssage("<strong>Attention!<strong> You are not logged in.")
+        }
+
+        // Include Menu File
+        $("#menu").load("menu.html");
+
+    });
+
+</script>
+

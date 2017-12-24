@@ -1,0 +1,175 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Home Page</title>
+    <link href="/Content/bootstrap.css" rel="stylesheet" />
+    <link href="/Content/site.css" rel="stylesheet" />
+
+    <!--<script src="/Scripts/modernizr-2.6.2.js"></script>-->
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Affinity</a>
+            </div>
+            <div class="navbar-collapse collapse pull-right">
+                <ul class="nav navbar-nav">
+                    <!--<li><a href="/">Home</a></li>-->
+                    <li><span><a href="/Help">API</a></span></li>
+                    <li><span><a href="/Test">Test Lab</a></span></li>
+                    <li><span><a href="/Contact" class="btn btn-default" style="color:#428bca;">Contact us</a></span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="homePage">
+        <div class="submenu bg-white">
+            <h2 class="menu-title"><strong>Test Lab</strong></h2>
+            <div id="menu">
+            </div>
+        </div>
+        <div style="width: 680px; margin: 0 auto; max-width: 100vw;">
+                 
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="page-title">Welcome to Affinity MMA test simulator.</h2>
+                        <p>
+                            Safely play with Affinity system in two roles: Employer or Rostering system's integration team member.
+                        </p>
+                        <h4 class="page-content-title">What you can do with Test Lab</h4>
+                        <ul>                            
+                            <li><p>Test what you can send to Affinity and how it distributes information to mobile devices.</p></li>
+                            <li><p>Cooperate with your rostering system and empower it with mobile appp distrubuted functionality.</p></li>
+                        </ul>
+                        <h4 class="page-content-title">How to get started</h4>
+                        <ul>                            
+                            <li><p>Download free Affinity applicaion on your Android or IOS phone <a href="#">here</a>.</p></li>
+                            <li><p>Register your Employee account via the Affinity application.</p></li>
+                            <li><p>Create your Rostering System/Employer account using the form below.</p></li>
+                        </ul>
+                    </div>
+                </div>
+            
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tabbable bg-white">
+                            <ul class="nav nav-tabs">
+                                <li class="tab-nav active"><a href="#panel-register" data-toggle="tab" aria-expanded="true" style="text-align:center;margin-right: 0px;">Register</a></li>
+                                <li class="tab-nav"><a href="#panel-login" data-toggle="tab" aria-expanded="false" style="text-align:center;margin-right: 0px;">Login</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="container tab-pane active" id="panel-register">
+                                    <form id="registerForm">
+                                        <div class="row form-group">
+                                            <label for="regUserName" class="col-sm-offset-3 col-md-5">Enter your email</label>
+                                            <input id="regUserName" type="text" class="col-sm-offset-3 col-md-4" style="width:300px; height:40px;"/>
+                                            <label for="error" class="col-sm-offset-3 col-md-5"></label>
+                                        </div>
+                                        <div class="row form-group">
+                                            <label for="regPassword" class="col-sm-offset-3 col-md-5">Create your unique password</label>
+                                            <input id="regPassword" type="password" class="col-sm-offset-3 col-md-4" style="width:300px; height:40px;" />
+                                            <label for="error" class="col-sm-offset-3 col-md-5">Must have at least one non letter/digit character and one uppercase</label>
+                                        </div>
+                                        <div class="row form-group">
+                                            <label for="regPassword2" class="col-sm-offset-3 col-md-5">Confirm Password</label>
+                                            <input id="regPassword2" type="password" class="col-sm-offset-3 col-md-4" style="width:300px; height:40px;" />                                            
+                                        </div>
+                                        <div class="form-group row">
+                                            <a class="btn btn-primary col-sm-offset-3 col-md-4" ref="#" onclick="regoFrm();">Submit</a>
+
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="container tab-pane" id="panel-login">
+                                    <form id="loginForm">
+                                        <div class="row form-group">
+                                            <label for="logUserName" class="col-sm-offset-3 col-md-6">Your email</label>
+                                            <input id="logUserName" type="text" class="col-sm-offset-3 col-md-4" style="width:300px; height:40px;" />
+                                            <label for="error" class="col-sm-offset-3 col-md-5"></label>
+                                        </div>
+                                        <div class="row form-group">
+                                            <label for="logPassword" class="col-sm-offset-3 col-md-5">Enter your password</label>
+                                            <input id="logPassword" type="password" class="col-sm-offset-3 col-md-4" style="width:300px; height:40px;" />
+                                            <label for="error" class="col-sm-offset-3 col-md-5"></label>
+                                        </div>
+                                        <div class="form-group row">
+                                            <a class="btn btn-primary col-sm-offset-3 col-md-4 btnLogin" ref="#" onclick="loginFrm();">Login</a>
+                                            <a class="btn btn-primary col-sm-offset-3 col-md-4 btnLogout" ref="#" onclick="logout();">Logout</a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="Status" style="display: none;"></div>
+                    </div>
+                </div>
+                <hr />
+                <footer>
+                    <p>&copy; 2016 - (c)Reserved</p>
+                </footer>
+        </div>
+    </div>
+    
+
+    <script src="/Scripts/jquery-1.10.2.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/respond.js"></script>
+    <script src="Scripts/Account.js"></script>
+    <script src="Scripts/Messages.js"></script>
+    <script src="Scripts/utils.js"></script>
+<script >
+    var loginFrm = function() {
+        var loginData = {
+            grant_type: 'password',
+            username: $('#logUserName').val(),
+            password: $('#logPassword').val()
+        };
+        login(loginData);
+    }
+
+    var regoFrm = function () {
+        register($('#regUserName').val(),
+                 $('#regPassword').val(),
+                 $('#regPassword2').val()
+                );
+
+    }
+
+    $(document).ready(function() {
+        if (isLogged()) {
+            var d = getLoginData();
+            infoMesssage("<strong>Logged</strong> as <strong>" + d.username + "</strong>");
+        } else {
+            warningMesssage("<strong>Attention!<strong> You are not logged in.")
+        }
+
+        // Include Menu File
+        $("#menu").load("menu.html");
+        var $height = $(".homePage").height() + 30;
+        if ($height < window.innerHeight)
+            $height = window.innerHeight;
+        $(".submenu").height($height);
+
+        $('.btnLogout').css('visibility', 'hidden');
+    });
+
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,373 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>CRUD Task ops</title>
+    <link href="/Content/bootstrap.css" rel="stylesheet" />
+    <link href="/Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="/Content/select2.min.css" rel="stylesheet" />
+    <link href="/Content/site.css" rel="stylesheet" />
+    <!--<script src="/Scripts/modernizr-2.6.2.js"></script>-->
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Affinity</a>
+            </div>
+            <div class="navbar-collapse collapse pull-right">
+                <ul class="nav navbar-nav">
+                    <!--<li><a href="/">Home</a></li>-->
+                    <li><span><a href="/Help">API</a></span></li>
+                    <li><span><a href="/Test">Test Lab</a></span></li>
+                    <li><span><a href="/Contact" class="btn btn-default" style="color:#428bca;">Contact us</a></span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="homePage">
+        <div class="submenu bg-white">
+            <h2 class="menu-title"><strong>Test Lab</strong></h2>
+            <div id="menu">
+            </div>
+        </div>
+        <div style="width: 780px; margin: 0 auto; max-width: 100vw;">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="page-title">CRUD Task</h2>
+                </div>                
+            </div>            
+            <div class="contentRoster">
+                <div class="row">
+                    <div class="col-md-9">
+                        <h4 class="page-content-title" style="margin-top:0;">CRUD operations for Task</h4>
+                    </div>
+                    <div class="col-md-3">
+                        <h4 class="page-content-title">
+                            <a class="reset-roster-data" onclick="resetTaskValues();">Reset Roster Data</a>
+                        </h4>                        
+                    </div>
+                    <div class="col-md-12" style="padding-top: 40px;">
+                        <form id="TaskForm">
+                            <div class="row form-group">
+                                <label for="iTaskId" class="col-md-2 control-label">Task Id</label>
+                                <input id="iTaskId" type="text" class="col-md-7 form-control" />
+                                <a class="btn btn-default btn-sm newId" onclick="newTaskId();">New Id </a>
+                                <a class="btn btn-default btn-sm getId" ref="#" onclick="getTaskById()">Get By Id</a>
+                            </div>
+                            <div class="row form-group">
+                                <label for="iEmployerName" class="col-md-2 control-label">Employer Name</label>
+                                <input id="iEmployerName" type="text" class="typeahead col-md-7 form-control" placeholder="Type to search" />                                
+                            </div>
+                            <div class="row form-group">
+                                <label for="iEmployerId" class="col-md-2 control-label">Employer Id</label>
+                                <input id="iEmployerId" type="text" class="col-md-7 form-control" />
+                                <a class="btn btn-default btn-sm newEmployerId" onclick="newEmployerId();">New Employer Id</a>
+                            </div>
+                            <div class="row form-group">
+                                <label for="iManagerContact" class="col-md-2 control-label">Manager Contact</label>
+                                <input id="iManagerContact" type="text" class="col-md-7 form-control" />
+                            </div>
+                            <div class="row form-group">
+                                <label for="iRosterId" class="col-md-2 control-label">RosterId</label>
+                                <input id="iRosterId" type="text" class="col-md-7 form-control" />
+                            </div>
+                            <div class="row form-group">
+                                <label for="iEmployeeEmail" class="col-md-2 control-label">Employee Email</label>
+                                <input id="iEmployeeEmail" type="text" class="typeahead col-md-7 form-control" placeholder="Type to search" />
+                            </div>
+                            <div class="row form-group">
+                                <label for="iDescription" class="col-md-2">Task Description</label>
+                                <input id="iDescription" type="text" class="col-md-7 form-control" />
+                            </div>
+                            <div class="row form-group">
+                                <label for="iTaskStatus" class="col-md-2 control-label">TaskStatus</label>
+                                <input id="iTaskStatus" type="text" class="col-md-7 form-control" />
+                            </div>
+                            <div class="row form-group">
+                                <label for="BeDoneBy" class="col-md-2 control-label">Date/Time BeDoneBy</label>
+                                <div id="BeDoneBy">
+                                    <input id="iDate" type="date" class="col-md-3 form-control" />
+                                    <input id="iTime" type="time" class="col-md-2 form-control" />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label for="taTaskBody" class="col-md-2 control-label">Task Body</label>
+                                <textarea id="taTaskBody" class="col-md-9 form-control" cols="80" rows="10"></textarea>
+                                <a class="btn btn-default btn-sm btnMakebody" onclick="setTaskBody();">Make Body</a>
+                            </div>
+                            <div class="form-group row">
+                                <a class="btn btn-danger btnDelete" ref="#" onclick="delTask()">Delete</a>
+                                <a class="btn btn-warning btnUpdate" ref="#" onclick="putTask()">Update / PUT</a>
+                                <a class="btn btn-success btnCreate" ref="#" onclick="postTask()">CReate / POST</a>                                
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div id="Status" style="display: none;"></div>
+                </div>
+                <hr />
+                <footer>
+                    <p>&copy; 2017 - Reserved</p>
+                </footer>
+            </div>
+        </div>
+            <script src="/Scripts/jquery-1.10.2.min.js"></script>
+            <script src="/Scripts/bootstrap.js"></script>
+            <script src="/Scripts/bootstrap-datetimepicker.min.js"></script>
+            <script src="/Scripts/respond.js"></script>
+            <script src="/Scripts/typeahead.bundle.js"></script>
+            <script src="Scripts/Account.js"></script>
+            <script src="Scripts/Messages.js"></script>
+            <script src="Scripts/Task.js"></script>
+            <script src="Scripts/DateConvert.js"></script>
+            <script src="Scripts/utils.js"></script>
+            <!--<script src="http://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.4/typeahead.bundle.min.js"></script>-->
+            <script>
+
+                $(document).ready(function () {
+
+                    // Include Menu File
+                    $("#menu").load("menu.html");
+                    var $height = $(".homePage").height() + 30;
+                    $(".submenu").height($height);
+
+                    // Get query parameter
+                    var taskId = getUrlParameter('Id');
+                    //alert(taskId);
+                    if (taskId) {
+                        $('#iTaskId').val(taskId);
+                        getTaskById();
+                    }
+
+                    // TypeAhead
+
+                    var empData = getList('employerList');
+                    var dataSource = new Bloodhound({
+                        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('employerName', 'employerId'),
+                        queryTokenizer: Bloodhound.tokenizers.whitespace,
+                        local: empData
+                    });
+
+                    dataSource.initialize();
+
+                    var empEmlData = getList('employeeEmail');
+                    var dataSource2 = new Bloodhound({
+                        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('employeeEmail'),
+                        queryTokenizer: Bloodhound.tokenizers.whitespace,
+                        local: empEmlData
+                    });
+
+                    dataSource2.initialize();
+
+                    $('#iEmployerName').typeahead({
+                        minLength: 0,
+                        highlight: true
+                    }, {
+                        name: 'employers',
+                        display: function (item) {
+                            //alert(item.Name);
+                            return item.employerName;//+ '–' + item.Id
+                        },
+                        source: dataSource.ttAdapter(),
+                        suggestion: function (data) {
+                            //alert(data.Name);
+                            //return '<div>' + data.Name + '–' + data.Id + '</div>'
+                            return '<div>' + data.employerName + '</div>'
+                        }
+
+                    });
+
+                    $('#iEmployerName').on('typeahead:selected', employeeNameItemSelectedHandler);
+
+                    $('#iEmployeeEmail').typeahead({
+                        minLength: 0,
+                        highlight: true
+                    }, {
+                        name: 'employees',
+                        display: function (item) {
+                            //alert(item.Name);
+                            return item.employeeEmail;
+                        },
+                        source: dataSource2.ttAdapter(),
+                        suggestion: function (data) {
+                            alert(data.Name);
+                            //return '<div>' + data.Name + '–' + data.Id + '</div>'
+                            return '<div>' + data.employeeEmail + '</div>'
+                        }
+                    });
+
+                    $('#iDate').change(function () {
+                        if (!$('#iTime').val()) {
+                            $('#iTime').val('00:00');
+                        }
+                    });
+                });
+
+                var employeeNameItemSelectedHandler = function (eventObject, suggestionObject, suggestionDataset) {
+                    var selected = suggestionObject.employerId;
+                    $('#iEmployerId').val(selected);
+                    $('#iManagerContact').val(suggestionObject.managerContact);
+                };
+
+                var newTaskId = function () {
+                    $('#iTaskId').val(guid());
+                }
+
+                var newEmployerId = function () {
+                    $('#iEmployerId').val(guid());
+                }
+
+                var resetTaskValues = function () {
+                    $('#iTaskId').val(guid());
+                    if (!$('#iEmployerId').val()) $('#iEmployerId').val(localStorage.getItem('iEmployerId') || "0EB90149-55F6-4FAF-8F7F-D9A473F73E3E");
+                    if (!$('#iEmployerName').val()) $('#iEmployerName').val(localStorage.getItem('iEmployerName') || "Test Employer REST1");
+                    if (!$('#iManagerContact').val()) $('#iManagerContact').val("manager@manager.com");
+                    if (!$('#iRoster').val()) $('#iRoster').val(localStorage.getItem('iRoster') || guid());
+                    if (!$('#iEmployeeEmail').val()) $('#iEmployeeEmail').val(localStorage.getItem('iEmployeeEmail') || "test@email1.com");
+                    if (!$('#iDescription').val()) $('#iDescription').val("Test Task Description");
+                    if (!$('#iTaskStatus').val()) $('#iTaskStatus').val('1');
+                    var cd = new Date();
+                    //cd.setTime( cd.getTime() + 5 * 86400000 );
+                    cd = dateAddDays(cd, 5);
+                    var y = cd.getYear() + 1900;
+                    var m = cd.getMonth() + 1;
+                    if (m > 12) {
+                        m -= 12;
+                        y += 1;
+                    }
+                    var d = cd.getDate();
+                    $('#iDate').val(y + '-' + pad2(m) + '-' + pad2(d));
+                    $('#iTime').val('08:00');
+
+                }
+
+                var setTaskBody = function () {
+                    if (!$('#iTaskId').val()) {
+                        newTaskId();
+                    }
+                    if (!$('#iEmployerId').val()) {
+                        newEmployerId();
+                    }
+                    if (!$('#iTime').val()) {
+                        $('#iTime').val('00:00');
+                    }
+                    var s = '{\n' +
+                        '"Id" : "' + $('#iTaskId').val() + '",\n' +
+                        '"CompanyEmployerId" : "' + $('#iEmployerId').val() + '",\n' +
+                        '"CompanyName" : "' + $('#iEmployerName').val() + '",\n' +
+                        '"ManagerContact" : "' + $('#iManagerContact').val() + '",\n' +
+                        '"RosterId" : "' + $('#iRosterId').val() + '",\n' +
+                        '"Employee" : "' + $('#iEmployeeEmail').val() + '",\n' +
+                        '"Description" : "' + $('#iDescription').val() + '",\n' +
+                        '"TaskStatus" : "' + $('#iTaskStatus').val() + '",\n' +
+                        '"BeDoneBy" : "' + getDateTime($('#iDate'), $('#iTime')) + '"\n' +
+                        '}';
+                    $('#taTaskBody').val(s);
+                    // save entered data in LS for later use
+                    var empInfo = {
+                        employerId: $('#iEmployerId').val(),
+                        employerName: $('#iEmployerName').val(),
+                        managerContact: $('#iManagerContact').val()
+                    };
+
+                    addObject2Dictionary(empInfo, 'employerName', 'employerList');
+
+                    var empEmlInfo = {
+                        employeeEmail: $('#iEmployeeEmail').val(),
+                    };
+
+                    addObject2Dictionary(empEmlInfo, 'employeeEmail', 'employeeEmail');
+                }
+
+                var updTaskBody = function (t) {
+
+                    $('#iEmployerId').val(t.CompanyEmployerId);
+                    $('#iEmployerName').val(t.CompanyName);
+                    $('#iManagerContact').val(t.ManagerContact);
+                    $('#iEmployeeEmail').val(t.Employee);
+                    $('#iRoster').val(t.RosterId);
+                    $('#iDescription').val(t.Description);
+                    $('#iEmployeeEmail').val(t.Employee);
+                    //var dt = stringDMin2Date(t.BeDoneBy);
+                    setDateTime($('#iDate'), $('#iTime'), t.BeDoneBy);
+                }
+
+                var displayErr = function (data, status) {
+                    errorMessage("<strong>Error!</strong> Status=" + status + "\n Text=" + data.responseText);
+                }
+
+                //var getTaskById = function () {
+                //    var id = $('#iTaskId').val();
+                //    debugger;
+                //    reqTaskById(id, function (data, status) {
+                //        var t = JSON.stringify(data).replace('{', '{\n').replace('}', '\n}').replaceAll(',', ',\n');
+                //        updTaskBody(t);
+                //        $('#taTaskBody').val(t);
+                //        successMesssage("Task successfully retrieved");
+                //    }, displayErr);
+                //}
+
+                var getTaskById = function () {
+                    var id = $('#iTaskId').val();
+                    debugger;
+                    reqTaskById(id, function (data, status) {
+                        var t = JSON.stringify(data).replace('{', '{\n').replace('}', '\n}').replaceAll(',', ',\n');
+
+                        $('#iTaskId').val(data.Id);
+                        $('#iEmployerId').val(data.CompanyEmployerId);
+                        $('#iEmployerName').val(data.CompanyName);
+                        $('#iManagerContact').val(data.ManagerContact);
+                        $('#iRosterId').val(data.RosterId);
+                        $('#iEmployeeEmail').val(data.Employee);
+                        $('#iDescription').val(data.Description);
+                        $('#iTaskStatus').val(data.TaskStatus);
+                        setDateTime($('#iDate'), $('#iTime'), data.BeDoneBy);
+
+                        $('#taTaskBody').val(t);
+                        successMesssage("Task successfully retrieved");
+                    }, displayErr);
+                }
+
+                var postTask = function () {
+
+                    setTaskBody();
+
+                    var b = JSON.parse($('#taTaskBody').val());
+                    reqTaskPOST(b, function (data, status) {
+                        $('#taTaskBody').val(null);
+                        successMesssage("Task Created");
+                    }, displayErr);
+                }
+
+                var putTask = function () {
+                    var id = $('#iTaskId').val();
+                    setTaskBody();
+                    var b = JSON.parse($('#taTaskBody').val());
+                    reqTaskPUT(id, b, function (data, status) {
+                        $('#taTaskBody').val(null);
+                        successMesssage("Task Updated");
+                    }, displayErr);
+                }
+
+                var delTask = function () {
+                    var id = $('#iTaskId').val();
+
+                    reqTaskDEL(id, function (data, status) {
+                        $('#taTaskBody').val(null);
+                        successMesssage("Task Deleted");
+                    }, displayErr);
+                }
+
+            </script>
+        </div>
+
+</body>
+</html>

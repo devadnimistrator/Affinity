@@ -1,0 +1,228 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Home Page</title>
+    <link href="/Content/bootstrap.css" rel="stylesheet" />
+    <link href="/Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="/Content/site.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Affinity</a>
+            </div>
+            <div class="navbar-collapse collapse pull-right">
+                <ul class="nav navbar-nav">
+                    <!--<li><a href="/">Home</a></li>-->
+                    <li><a href="/Help">API</a></li>
+                    <li><a href="/Test">Test Lab</a></li>
+                    <li><a href="/Contact">Contact us</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+
+        <div class="page-header">
+            <h1>Test Example</h1>
+        </div>
+        <hr />
+        <div class="row">
+            <div id="menu" class="col-md-12">
+                <!-- Menu will be included from JQuery! -->
+            </div>
+        </div>
+        <p></p>
+        <div class="row">
+
+            <div class="row">
+                <div class="col-md-9">
+                    <h2>Get Task List</h2>
+                    <form id="TaskForm">
+                        <div class="row form-group">
+                            <label for="edEmployerName" class="col-md-3 control-label">Employer/Company Name</label>
+                            <input id="edEmployerName" type="text" class="typeahead col-md-6 form-control" placeholder="Type to search" />
+                        </div>
+
+                        <div class="row form-group">
+                            <label for="edEmployerId" class="col-md-3 control-label">Employer Id</label>
+                            <input id="edEmployerId" type="text" class="col-md-6 form-control" />
+                        </div>
+
+                        <div class="row form-group">
+                            <label for="dateStart" class="col-md-3 control-label">Date Start</label>
+                            <div id="dateStart">
+                                <input id="edDateStart" type="date" class="col-md-3 form-control" />
+                                <input id="edTimeStart" type="time" class="col-md-3 form-control" />
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <label for="dateEnd" class="col-md-3 control-label">End Date</label>
+                            <div id="dateEnd">
+                                <input id="edDateEnd" type="date" class="col-md-3 form-control" />
+                                <input id="edTimeEnd" type="time" class="col-md-3 form-control" />
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <a class="btn btn-primary col-sm-offset-3" ref="#" onclick="getTaskList()">Get List</a>
+                        </div>
+                    </form>
+                </div>
+
+
+            </div>
+            <div class="row">
+                <div id="Status" style="display: none;"></div>
+            </div>
+            <div class="row">
+                <h2>Results</h2>
+                <div id="Results" style="display: block;">
+
+
+                </div>
+            </div>
+
+
+            <hr />
+            <footer>
+                <p>&copy; 2017 - Reserved</p>
+            </footer>
+        </div>
+    </div>
+    <script src="/Scripts/jquery-1.10.2.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/bootstrap-datetimepicker.min.js"></script>
+    <script src="/Scripts/respond.js"></script>
+    <script src="/Scripts/typeahead.bundle.js"></script>
+    <script src="Scripts/Account.js"></script>
+    <script src="Scripts/Messages.js"></script>
+    <script src="Scripts/Task.js"></script>
+    <script src="Scripts/DateConvert.js"></script>
+    <script src="Scripts/utils.js"></script>
+
+    <script>
+
+        //var setDateTime = function (iD, iT, dt) {
+        //    var dd = dt.substr(0, 4) + '-' + dt.substr(4, 2) + '-' + dt.substr(6, 2);
+        //    iD.val(dd);
+        //    var tt = dt.substr(9, 2) + ':' + dt.substr(11, 2);
+        //    iT.val(tt);
+        //}
+
+        //var getDateTime = function (iD, iT) {
+        //    var dd = iD.val();
+        //    dd = dd.substr(0, 4) + dd.substr(5, 2) + dd.substr(8, 2);
+        //    var tt = iT.val();
+        //    tt = tt.substr(0, 2) + tt.substr(3, 2);
+        //    return dd + 'T' + tt;
+        //}
+
+
+        $(document).ready(function () {
+
+            //$('#edEmployerId').val('0EB90149-55F6-4FAF-8F7F-D9A473F73E3E');
+            //setDateTime($('#iDateStart'), $('#iTimeStart'), '20160101T1213');
+            //setDateTime($('#iDateEnd'), $('#iTimeEnd'), '20161231T1213');
+
+            // Include Menu File
+            $("#menu").load("menu.html");
+
+            // TypeAhead
+
+            var empData = getList('employerList');
+            var dataSource = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('employerName', 'employerId'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                local: empData
+            });
+
+            dataSource.initialize();
+
+            $('#edEmployerName').typeahead({
+                minLength: 0,
+                highlight: true
+            }, {
+                name: 'employers',
+                display: function (item) {
+                    return item.employerName;
+                },
+                source: dataSource.ttAdapter(),
+                suggestion: function (data) {
+                    return '<div>' + data.employerName + '</div>'
+                }
+
+            });
+
+            $('#edEmployerName').on('typeahead:selected', employerNameItemSelectedHandler);
+
+            $('#edDateStart').change(function () {
+                if (!$('#edTimeStart').val()) {
+                    $('#edTimeStart').val('00:00');
+                }
+            });
+
+            $('#edDateEnd').change(function () {
+                if (!$('#edTimeEnd').val()) {
+                    $('#edTimeEnd').val('00:00');
+                }
+            });
+
+        });
+
+        var employerNameItemSelectedHandler = function (eventObject, suggestionObject, suggestionDataset) {
+            var selected = suggestionObject.employerId;
+            $('#edEmployerId').val(selected);
+        };
+
+        var genNewItem = function (item) {
+            return '<div class="panel panel-default">' +
+                   '<div class="panel-heading">Id:"' + item.Id + '"<br/>' +
+                    'Date: ' + stringDMin2Date(item.BeDoneBy).toString() + ' </div>' +
+                    '<div class="panel-body">' +
+                                '<span class="col-md-2">EmployerName:</span><span class="col-md-10">' + item.CompanyName + '</span><br/>' +
+                                '<span class="col-md-2">EmployeeEmail:</span><span class="col-md-10">' + item.Employee + '</span><br/>' +
+                                '<span class="col-md-2">Task:</span><span class="col-md-10">' + item.Description + '</span><br/>' +
+                                '<span class="col-md-2">Status:</span><span class="col-md-10">' + item.Status + '</span><br/>' +
+                                '<span class="col-md-2">Completion:</span><span class="col-md-10">' + item.CompletionTime + '</span><br />' +
+                                '<span class="col-md-2">Comment:</span><span class="col-md-10">' + item.CompletionComment + '</span>' +
+                                '<span class="col-md-12"><a class="btn btn-primary" href="TaskEdit.html?Id=' + item.Id + '">Edit</a></span><br/>' +
+                            '</div></div>';
+        }
+
+        var displayErr = function (data, status) {
+            errorMessage("<strong>Error!</strong> Status=" + status + "\n Text=" + data.responseText);
+        }
+
+        var getTaskList = function () {
+            var sDt = getDateTime($('#edDateStart'), $('#edTimeStart'));
+            var eDt = getDateTime($('#edDateEnd'), $('#edTimeEnd'));
+            hideMessage();
+
+            reqTaskList($('#edEmployerId').val(),
+                sDt,
+                eDt,
+                function (data, status) {
+                    var s = '';
+                    $.each(data,
+                        function (index, item) {
+                            s += genNewItem(item);
+                        });
+                    $('#Results').empty();
+                    $('#Results').append($(s));
+                    successMesssage("Task List retrieved");
+                },
+                displayErr);
+        }
+    </script>
+</body>
+</html>

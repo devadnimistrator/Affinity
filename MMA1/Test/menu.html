@@ -1,0 +1,49 @@
+﻿<ul class="nav">
+    <li role="presentation" id="login"><a href="index.html"><span>Login/Register</span></a></li>
+    <li role="presentation" id="rosterCrud"><a href="RosterEdit.html"><span>CRUD Roster</span></a></li>
+    <li role="presentation" id="rosterList"><a href="Roster.html"><span>Roster List</span></a></li>
+    <li role="presentation" id="taskCrud"><a href="TaskEdit.html"><span>CRUD Task</span></a></li>
+    <!-- li role="presentation" id="taskList"><a href="Task.html">Task List</a></!--li-->
+    <li role="presentation" id="clock"><a href="ClockOnOff.html"><span>Clock On Data</span></a></li>
+    <li role="presentation" id="checklistCrud"><a href="CheckListEdit.html"><span>CRUD Check List</span></a></li>
+    <li role="presentation" id="checklistList"><a href="CheckList.html"><span>Check List List</span></a></li>
+    <li role="presentation" id="eaList"><a href="EAList.html"><span>Employee Availability List</span></a></li>
+</ul>
+<script>
+    $(document).ready(function () {
+
+        var currentFile = window.location.pathname.split("/").pop();
+        //alert(currentFile);
+
+        switch (currentFile) {
+            case 'index.html':
+                $('#login').removeClass().addClass('active');
+                break;
+            case 'RosterEdit.html':
+                $('#rosterCrud').removeClass().addClass('active');
+                break;
+            case 'Roster.html':
+                $('#rosterList').removeClass().addClass('active');
+                break;
+            case 'TaskEdit.html':
+                $('#taskCrud').removeClass().addClass('active');
+                break;
+            case 'Task.html':
+                $('#taskList').removeClass().addClass('active');
+                break;
+            case 'ClockOnOff.html':
+                $('#clock').removeClass().addClass('active');
+                break;
+            case 'CheckListEdit.html':
+                $('#checklistCrud').removeClass().addClass('active');
+                break;
+            case 'CheckList.html':
+                $('#checklistList').removeClass().addClass('active');
+                break;
+            case 'EAList.html':
+                $('#eaList').removeClass().addClass('active');
+                break;
+        }
+    });
+
+</script>

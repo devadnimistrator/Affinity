@@ -1,0 +1,167 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Employee Availabilty List</title>
+    <link href="/Content/bootstrap.css" rel="stylesheet" />
+    <link href="/Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="/Content/site.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Affinity</a>
+            </div>
+            <div class="navbar-collapse collapse pull-right">
+                <ul class="nav navbar-nav">
+                    <!--<li><a href="/">Home</a></li>-->
+                    <li><span><a href="/Help">API</a></span></li>
+                    <li><span><a href="/Test">Test Lab</a></span></li>
+                    <li><span><a href="/Contact" class="btn btn-default" style="color:#428bca;">Contact us</a></span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="homePage">
+        <div class="submenu bg-white">
+            <h2 class="menu-title"><strong>Test Lab</strong></h2>
+            <div id="menu">
+            </div>
+        </div>
+        <div style="width: 780px; margin: 0 auto; max-width: 100vw;">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="page-title">Employee Availabilty List</h2>
+                </div>
+            </div>
+            <div class="contentRoster">
+                <div class="row">
+                    <div class="col-md-9">
+                        <h4 class="page-content-title" style="margin-top:0;">Get Employee Availabilty List</h4>
+                        <form id="EAListForm">
+                            <div class="row form-group">
+                                <label for="edEmployeeEmail" class="col-md-2 control-label">Employee Email</label>
+                                <input id="edEmployeeEmail" type="text" class="typeahead col-md-6 form-control" placeholder="Type to search" />
+                            </div>
+                            <div class="row form-group">
+                                <label for="dateStart" class="col-md-2 control-label">Date Start</label>
+                                <div id="dateStart">
+                                    <input id="iDateStart" type="date" class="col-md-3 form-control" />
+                                    <input id="iTimeStart" type="time" class="col-md-3 form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <a class="btn btn-primary col-sm-offset-2 btnGetlist" ref="#" onclick="getEAList();">Get List</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div id="Status" style="display: none;"></div>
+                </div>
+                <div class="row">
+                    <h4 class="result">Results</h4>
+                    <div id="Results" style="display: block;">
+                    </div>
+                </div>
+                <hr />
+                <footer>
+                    <p>&copy; 2017 - Reserved</p>
+                </footer>
+            </div>
+        </div>
+        <script src="/Scripts/jquery-1.10.2.js"></script>
+        <script src="/Scripts/bootstrap.js"></script>
+        <script src="/Scripts/bootstrap-datetimepicker.min.js"></script>
+        <script src="/Scripts/respond.js"></script>
+        <script src="/Scripts/typeahead.bundle.js"></script>
+        <script src="Scripts/Account.js"></script>
+        <script src="Scripts/Messages.js"></script>
+        <script src="Scripts/EA.js"></script>
+        <script src="Scripts/DateConvert.js"></script>
+        <script src="Scripts/utils.js"></script>
+        <script>
+
+            $(document).ready(function () {
+
+                setDateTime($('#iDateStart'), $('#iTimeStart'), '20170410T0800');
+
+                // Include Menu File
+                $("#menu").load("menu.html");
+                var $height = $(".homePage").height() + 30;
+                if ($height < window.innerHeight)
+                    $height = window.innerHeight;
+                $(".submenu").height($height);
+                // TypeAhead
+
+                var empEmlData = getList('employeeEmail');
+                var dataSource2 = new Bloodhound({
+                    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('employeeEmail'),
+                    queryTokenizer: Bloodhound.tokenizers.whitespace,
+                    local: empEmlData
+                });
+
+                dataSource2.initialize();
+
+                $('#edEmployeeEmail').typeahead({
+                    minLength: 0,
+                    highlight: true
+                }, {
+                    name: 'employees',
+                    display: function (item) {
+                        return item.employeeEmail;
+                    },
+                    source: dataSource2.ttAdapter(),
+                    suggestion: function (data) {
+                        return '<div>' + data.employeeEmail + '</div>'
+                    }
+                });
+            });
+
+            var genNewItem = function (data) {
+                var item = data;
+                return '<div class="panel panel-primary">' +
+                       '<div class="panel-heading">Id:"' + item.Id + '"<br/>' +
+                        'Employee Email: ' + item.EmployeeEmail + ' </div>' +
+                        '<div class="panel-body">' +
+                                    '<span class="col-md-2">Start Date:</span><span class="col-md-10">' + stringDMin2Date(item.DateStart).toString() + '</span><br/>' +
+                                    '<span class="col-md-2">Start Date:</span><span class="col-md-10">' + stringDMin2Date(item.DateEnd).toString() + '</span><br/>' +
+                                    '<span class="col-md-2">Availabilty:</span><span class="col-md-10">' + item.Availability + '</span><br/>' +
+                                    '<span class="col-md-2">Whole Day:</span><span class="col-md-10">' + item.WholeDay + '</span><br/>' +
+                                '</div></div>';
+            };
+
+            var displayErr = function (data, status) {
+                errorMessage("<strong>Error!</strong> Status=" + status + "\n Text=" + data.responseText);
+            };
+
+            var getEAList = function () {
+                var sDt = getDateTime($('#iDateStart'), $('#iTimeStart'));
+                var eml = $('#edEmployeeEmail').val();
+                hideMessage();
+                //debugger;
+                reqEAList(eml, sDt,
+                    function (data, status) {
+                        var s = '';
+                        $.each(data,
+                            function (index, item) {
+                                s += genNewItem(item);
+                            });
+                        $('#Results').empty();
+                        $('#Results').append($(s));
+                        successMesssage("Employee availability data loaded");
+                    },
+                    displayErr);
+            };
+
+        </script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,404 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>CRUD Roster ops</title>
+    <link href="/Content/bootstrap.css" rel="stylesheet" />
+    <link href="/Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="/Content/site.css" rel="stylesheet"/>
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Affinity</a>
+            </div>
+            <div class="navbar-collapse collapse pull-right">
+                <ul class="nav navbar-nav">
+                    <!--<li><a href="/">Home</a></li>-->
+                    <li><span><a href="/Help">API</a></span></li>
+                    <li><span><a href="/Test">Test Lab</a></span></li>
+                    <li><span><a href="/Contact" class="btn btn-default" style="color:#428bca;">Contact us</a></span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="homePage">
+        <div class="submenu bg-white">
+            <h2 class="menu-title"><strong>Test Lab</strong></h2>
+            <div id="menu">
+            </div>
+        </div>
+        <div style="width: 780px; margin: 0 auto; max-width: 100vw;">
+            <div class="row" style="padding-bottom:30px;">
+                <div class="col-md-12">
+                    <h2 class="page-title">CRUD Roster</h2>
+                </div>
+                <div class="col-xs-12 col-md-7 col-lg-6">
+                    <p>
+                        Roster is a set of assignments given to your employees to fill in the positions at a particular place and time.<br />
+                        Manage your rosters here: create, update or delete.
+                    </p>
+
+                </div>
+                <div class="col-xs-12 col-md-5 col-lg-6">
+                    <div align="center" class="e4mbed-responsive embed-responsive-16by9">
+                        <video controls class="em4bed-responsive-item" width="400" style="width: 100%; min-height: 100px;height: auto;">
+                            <source src="video/RosterCreate.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="contentRoster">
+                <div class="row">
+                    <div class="col-md-9">
+                        <h4 class="page-content-title">Create New Roster Assignment</h4>
+                    </div>
+                    <div class="col-md-3">
+                        <h4 class="page-content-title">
+                            <a class="reset-roster-data" onclick="resetRosterValues();">Reset Roster Data</a>
+                        </h4>
+                    </div>
+                    <div class="col-md-12" style="padding-top: 40px;">
+                        <form id="RosterForm">
+                            <div class="row form-group">
+                                <label for="iRosterId" class="col-md-2 control-label">Roster Id</label>
+                                <div class="col-md-10">
+                                    <div class="row">
+                                        <input id="iRosterId" type="text" class="col-md-7 form-control" />
+                                        <a class="btn btn-default btn-sm newId" onclick="newRosterId();">New Id</a>
+                                        <a class="btn btn-default btn-sm getId" onclick="getRosterById()">Get By Id</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label for="iEmployerName" class="col-md-2 control-label">Employer Name</label>
+                                <input id="iEmployerName" type="text" class="typeahead col-md-7 form-control" placeholder="Type to search" />
+                            </div>
+                            <div class="row form-group">
+                                <label for="iEmployerId" class="col-md-2 control-label">Employer Id</label>
+                                <input id="iEmployerId" type="text" class="col-md-7 form-control" />
+                                <a class="btn btn-default btn-sm newEmployerId" onclick="newEmployerId();">New Employer Id </a>
+                            </div>
+                            <div class="row form-group">
+                                <label for="iSiteName" class="col-md-2 control-label">Site Name</label>
+                                <input id="iSiteName" type="text" class="col-md-7 form-control" />
+                            </div>
+                            <div class="row form-group">
+                                <label for="iSiteAddress" class="col-md-2 control-label">Site Address</label>
+                                <input id="iSiteAddress" type="text" class="col-md-7 form-control" />
+                            </div>
+                            <div class="row form-group">
+                                <label for="iSiteDepartment" class="col-md-2 control-label">Site Department</label>
+                                <input id="iSiteDepartment" type="text" class="col-md-7 form-control" />
+                            </div>
+                            <div class="row form-group">
+                                <label for="iPosition" class="col-md-2 control-label">Position</label>
+                                <input id="iPosition" type="text" class="col-md-7 form-control" />
+                            </div>
+                            <div class="row form-group">
+                                <label for="iEmployeeEmail" class="col-md-2 control-label">Employee Email</label>
+                                <input id="iEmployeeEmail" type="text" class="typeahead col-md-7 form-control" placeholder="Type to search" />
+                            </div>
+                            <div class="row form-group">
+                                <label for="DateTimeOn" class="col-md-2 control-label">Date/Time On</label>
+                                <div id="DateTimeOn">
+                                    <input id="iDateOn" type="date" class="col-md-3 form-control" />
+                                    <input id="iTimeOn" type="time" class="col-md-2 form-control" />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label for="DateTimeOff" class="col-md-2 control-label">Date/Time Off</label>
+                                <div id="DateTimeOff">
+                                    <input id="iDateOff" type="date" class="col-md-3 form-control" />
+                                    <input id="iTimeOff" type="time" class="col-md-2 form-control" />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label for="taRosterBody" class="col-md-2 control-label">Roster Body</label>
+                                <textarea id="taRosterBody" class="col-md-9 form-control" cols="80" rows="10"></textarea>
+                                <a class="btn btn-default btn-sm btnMakebody" onclick="setRosterBody();">Make Body </a>
+                            </div>
+                            <div class="form-group row">
+                                <a class="btn btn-danger btnDelete " ref="#" onclick="delRoster()">Delete</a>                                
+                                <a class="btn btn-warning btnUpdate " ref="#" onclick="putRoster()">Update / PUT</a>
+                                <a class="btn btn-primary btnCreate " ref="#" onclick="postRoster()">Create / POST</a>
+                            </div>
+                        </form>
+                    </div>
+                    
+                </div>
+
+                <div class="row">
+                    <div id="Status" style="display: none;"></div>
+                </div>
+                <hr />
+                <footer>
+                    <p>&copy; 2017 - Reserved</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+        <script src="/Scripts/jquery-1.10.2.js"></script>
+        <script src="/Scripts/bootstrap.js"></script>
+        <script src="/Scripts/bootstrap-datetimepicker.min.js"></script>
+        <script src="/Scripts/respond.js"></script>
+        <script src="/Scripts/typeahead.bundle.js"></script>
+        <script src="Scripts/Account.js"></script>
+        <script src="Scripts/Messages.js"></script>
+        <script src="Scripts/Roster.js"></script>
+        <script src="Scripts/DateConvert.js"></script>
+        <script src="Scripts/utils.js"></script>
+        <script>
+
+            $(document).ready(function () {
+
+                // Include Menu File
+                $("#menu").load("menu.html");
+                var $height = $(".homePage").height() + 30;
+                $(".submenu").height($height);
+                // Get query parameter
+                var rosterId = getUrlParameter('Id');
+                //alert(rosterId);
+                if (rosterId) {
+                    $('#iRosterId').val(rosterId);
+                    getRosterById();
+                }
+
+                // TypeAhead
+
+                var empData = getList('employerList');
+                var dataSource = new Bloodhound({
+                    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('employerName', 'employerId'),
+                    queryTokenizer: Bloodhound.tokenizers.whitespace,
+                    local: empData
+                });
+
+                dataSource.initialize();
+
+                var empEmlData = getList('employeeEmail');
+                var dataSource2 = new Bloodhound({
+                    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('employeeEmail'),
+                    queryTokenizer: Bloodhound.tokenizers.whitespace,
+                    local: empEmlData
+                });
+
+                dataSource2.initialize();
+
+                $('#iEmployerName').typeahead({
+                    minLength: 0,
+                    highlight: true
+                }, {
+                    name: 'employers',
+                    display: function (item) {
+                        //alert(item.Name);
+                        return item.employerName;//+ '–' + item.Id
+                    },
+                    source: dataSource.ttAdapter(),
+                    suggestion: function (data) {
+                        //alert(data.Name);
+                        //return '<div>' + data.Name + '–' + data.Id + '</div>'
+                        return '<div>' + data.employerName + '</div>'
+                    }
+
+                });
+
+                $('#iEmployerName').on('typeahead:selected', employeeNameItemSelectedHandler);
+
+                $('#iEmployeeEmail').typeahead({
+                    minLength: 0,
+                    highlight: true
+                }, {
+                    name: 'employees',
+                    display: function (item) {
+                        //alert(item.Name);
+                        return item.employeeEmail;
+                    },
+                    source: dataSource2.ttAdapter(),
+                    suggestion: function (data) {
+                        alert(data.Name);
+                        //return '<div>' + data.Name + '–' + data.Id + '</div>'
+                        return '<div>' + data.employeeEmail + '</div>'
+                    }
+                });
+
+                $('#iDateOn').change(function () {
+                    if (!$('#iTimeOn').val()) {
+                        $('#iTimeOn').val('00:00');
+                    }
+                });
+                $('#iDateOff').change(function () {
+                    if (!$('#iTimeOff').val()) {
+                        $('#iTimeOff').val('00:00');
+                    }
+                });
+
+            });
+
+            var employeeNameItemSelectedHandler = function (eventObject, suggestionObject, suggestionDataset) {
+                //alert(suggestionObject.Id);
+                var selected = suggestionObject.employerId;
+                $('#iEmployerId').val(selected);
+            };
+
+            var newRosterId = function () {
+                $('#iRosterId').val(guid());
+            }
+
+            var newEmployerId = function () {
+                $('#iEmployerId').val(guid());
+            }
+
+
+
+            var resetRosterValues = function () {
+                $('#iRosterId').val(guid());
+                if (!$('#iEmployerId').val()) $('#iEmployerId').val(localStorage.getItem('iEmployerId') || "0EB90149-55F6-4FAF-8F7F-D9A473F73E3E");
+                if (!$('#iEmployerName').val()) $('#iEmployerName').val(localStorage.getItem('iEmployerName') || "Test Employer REST1");
+                if (!$('#iSiteName').val()) $('#iSiteName').val("Test Site 1");
+                if (!$('#iSiteAddress').val()) $('#iSiteAddress').val("Site Address 1");
+                if (!$('#iSiteDepartment').val()) $('#iSiteDepartment').val("Department AAA");
+                if (!$('#iPosition').val()) $('#iPosition').val("Position 1");
+                if (!$('#iEmployeeEmail').val()) $('#iEmployeeEmail').val(localStorage.getItem('iEmployeeEmail') || "test@email1.com");
+                var cd = new Date();
+                //cd.setTime( cd.getTime() + 5 * 86400000 );
+                cd = dateAddDays(cd, 5);
+                var y = cd.getYear() + 1900;
+                var m = cd.getMonth() + 1;
+                if (m > 12) {
+                    m -= 12;
+                    y += 1;
+                }
+                var d = cd.getDate();
+                $('#iDateOn').val(y + '-' + pad2(m) + '-' + pad2(d));
+                $('#iTimeOn').val('08:00');
+
+                $('#iDateOff').val(y + '-' + pad2(m) + '-' + pad2(d));
+                $('#iTimeOff').val('17:00');
+
+            }
+
+            var setRosterBody = function () {
+                if (!$('#iRosterId').val()) {
+                    newRosterId();
+                }
+                if (!$('#iEmployerId').val()) {
+                    newEmployerId();
+                }
+                if (!$('#iTimeOff').val()) {
+                    $('#iTimeOff').val('00:00');
+                }
+                if (!$('#iTimeOn').val()) {
+                    $('#iTimeOn').val('00:00');
+                }
+                var s = '{\n' +
+                    '"Id" : "' + $('#iRosterId').val() + '",\n' +
+                    '"EmployerId" : "' + $('#iEmployerId').val() + '",\n' + //"0EB90149-55F6-4FAF-8F7F-D9A473F73E3E",\n' +
+                    '"EmployerName" : "' + $('#iEmployerName').val() + '",\n' + // "Test Employer REST1",\n' +
+                    '"SiteName" : "' + $('#iSiteName').val() + '",\n' + // "Test Site 1",\n' +
+                    '"SiteAddress" : "' + $('#iSiteAddress').val() + '",\n' + // "Site Address 1",\n' +
+                    '"SiteDept" : "' + $('#iSiteDepartment').val() + '",\n' + // "Department ",\n' +
+                    '"Position" : "' + $('#iPosition').val() + '",\n' + // "Position 1",\n' +
+                    '"EmployeeEmail" : "' + $('#iEmployeeEmail').val() + '",\n' + // "test@email1.com",\n' +
+                    '"DateTimeOn" : "' + getDateTime($('#iDateOn'), $('#iTimeOn')) + '",\n' + // "20160711T1800",\n' +
+                    '"DateTimeOff" : "' + getDateTime($('#iDateOff'), $('#iTimeOff')) + '"\n' + // "20160811T0800"\n' +
+                    '}';
+                $('#taRosterBody').val(s);
+                // save entered data in LS for later use
+                //var empId = $('#iEmployerId').val();
+                //var empInfo = getDictionaryValue(empId, 'employerId', 'employerList');
+
+                var empInfo = {
+                    employerId: $('#iEmployerId').val(),
+                    employerName: $('#iEmployerName').val(),
+                    //employeeEmail: $('#iEmployeeEmail').val(),
+                    managerContact: "" //$('#iManagerContact').val()
+                };
+
+                //localStorage.clear();
+                //localStore($('#iEmployerId').val(), empInfo);
+                //addObject2Dictionary(empInfo, 'employerId', 'employerList');
+                addObject2Dictionary(empInfo, 'employerName', 'employerList');
+
+                var empEmlInfo = {
+                    employeeEmail: $('#iEmployeeEmail').val(),
+                };
+
+                addObject2Dictionary(empEmlInfo, 'employeeEmail', 'employeeEmail');
+
+            }
+
+            var displayErr = function (data, status) {
+                errorMessage("<strong>Error!</strong> Status=" + status + "\n Text=" + data.responseText);
+            }
+
+
+
+            var getRosterById = function () {
+                var id = $('#iRosterId').val();
+
+                reqRosterById(id, function (data, status) {
+                    var t = JSON.stringify(data).replace('{', '{\n').replace('}', '\n}').replaceAll(',', ',\n');
+                    var j = data;
+                    $('#taRosterBody').val(t);
+                    $('#iRosterId').val(j.Id);
+                    $('#iEmployerId').val(j.EmployerId);
+                    $('#iEmployerName').val(j.EmployerName);
+                    $('#iSiteName').val(j.SiteName);
+                    $('#iSiteAddress').val(j.SiteAddress);
+                    $('#iSiteDepartment').val(j.SiteDepartment);
+                    $('#iEmployeeEmail').val(j.EmployeeEmail);
+                    $('#iSiteDepartment').val(j.SiteDept);
+                    $('#iPosition').val(j.Position);
+                    setDateTime($('#iDateOff'), $('#iTimeOff'), j.DateTimeOff);
+                    setDateTime($('#iDateOn'), $('#iTimeOn'), j.DateTimeOn);
+
+                    successMesssage("Roster successfully retrieved");
+                }, displayErr);
+            }
+
+            var postRoster = function () {
+
+                setRosterBody();
+                var b = JSON.parse($('#taRosterBody').val());
+                reqRosterPOST(b, function (data, status) {
+                    $('#taRosterBody').val(null);
+                    successMesssage("Roster Created");
+                }, displayErr);
+            }
+
+            var putRoster = function () {
+                var id = $('#iRosterId').val();
+                setRosterBody();
+                var b = JSON.parse($('#taRosterBody').val());
+                reqRosterPUT(id, b, function (data, status) {
+                    $('#taRosterBody').val(null);
+                    successMesssage("Roster Updated <Strong>Note:</Strong> Employer ID and name are not getting updated");
+                }, displayErr);
+            }
+
+            var delRoster = function () {
+                var id = $('#iRosterId').val();
+
+                reqRosterDEL(id, function (data, status) {
+                    $('#taRosterBody').val(null);
+                    successMesssage("Roster Deleted");
+                }, displayErr);
+            }
+
+        </script>
+ 
+
+
+
+</body>
+</html>
